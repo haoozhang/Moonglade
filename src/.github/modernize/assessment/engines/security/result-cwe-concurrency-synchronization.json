@@ -1,0 +1,98 @@
+{
+  "analysis_method": "LLM",
+  "execution_time_seconds": 0,
+  "status": "success",
+  "timestamp": "2026-06-22T07:37:46Z",
+  "result": {
+    "confidence": "high",
+    "finding": "Assessed 6 CWE rules in Concurrency & Synchronization: 2 FOUND, 4 NOT_FOUND",
+    "values": [
+      {
+        "category": "Concurrency & Synchronization",
+        "id": "CWE-543",
+        "description": "The product uses the singleton pattern when creating a resource within a multithreaded environment.",
+        "severity": "potential",
+        "storyPoint": 5,
+        "evidence": {
+          "files": [
+            "Moonglade.Web/Handlers/WriteFoafCommand.cs"
+          ],
+          "explanation": "In WriteFoafCommandHandler (lines 25-27), the static field '_xmlNamespaces' is lazily initialized using the '??=' operator without any synchronization: 'private static Dictionary<string,string> _xmlNamespaces; ... _xmlNamespaces ??= new()'. In a multithreaded ASP.NET Core environment, multiple concurrent requests can simultaneously observe '_xmlNamespaces' as null and each create a new Dictionary instance, violating the singleton guarantee and potentially causing race conditions."
+        },
+        "name": "Use of Singleton Pattern Without Synchronization in a Multithreaded Context",
+        "status": "FOUND"
+      },
+      {
+        "category": "Concurrency & Synchronization",
+        "id": "CWE-567",
+        "description": "The product does not properly synchronize shared data, such as static variables across threads, which can lead to undefined behavior and unpredictable data changes.",
+        "severity": "potential",
+        "storyPoint": 5,
+        "evidence": {
+          "files": [],
+          "explanation": ""
+        },
+        "name": "Unsynchronized Access to Shared Data in a Multithreaded Context",
+        "status": "NOT_FOUND"
+      },
+      {
+        "category": "Concurrency & Synchronization",
+        "id": "CWE-662",
+        "description": "The product utilizes multiple threads or processes to allow temporary access to a shared resource that can only be exclusive to one process at a time, but it does not properly synchronize these actions, which might cause simultaneous accesses of this resource by multiple threads or processes.",
+        "severity": "potential",
+        "storyPoint": 8,
+        "evidence": {
+          "files": [],
+          "explanation": ""
+        },
+        "name": "Improper Synchronization",
+        "status": "NOT_FOUND"
+      },
+      {
+        "category": "Concurrency & Synchronization",
+        "id": "CWE-667",
+        "description": "The product does not properly acquire or release a lock on a resource, leading to unexpected resource state changes and behaviors.",
+        "severity": "potential",
+        "storyPoint": 8,
+        "evidence": {
+          "files": [
+            "Moonglade.BackgroundServices/ScheduledPublishWakeUp.cs"
+          ],
+          "explanation": "In ScheduledPublishWakeUp (lines 9 and 18), 'lock(this)' is used in both GetWakeToken() and WakeUp() methods. Locking on 'this' (the instance reference) is an improper locking pattern: external code that holds a reference to the same ScheduledPublishWakeUp instance could acquire the same lock, potentially causing deadlocks or unintended blocking. The recommended approach is to use a private dedicated lock object."
+        },
+        "name": "Improper Locking",
+        "status": "FOUND"
+      },
+      {
+        "category": "Concurrency & Synchronization",
+        "id": "CWE-820",
+        "description": "The product utilizes a shared resource in a concurrent manner but does not attempt to synchronize access to the resource.",
+        "severity": "potential",
+        "storyPoint": 8,
+        "evidence": {
+          "files": [],
+          "explanation": ""
+        },
+        "name": "Missing Synchronization",
+        "status": "NOT_FOUND"
+      },
+      {
+        "category": "Concurrency & Synchronization",
+        "id": "CWE-821",
+        "description": "The product utilizes a shared resource in a concurrent manner, but it does not correctly synchronize access to the resource.",
+        "severity": "potential",
+        "storyPoint": 8,
+        "evidence": {
+          "files": [],
+          "explanation": ""
+        },
+        "name": "Incorrect Synchronization",
+        "status": "NOT_FOUND"
+      }
+    ],
+    "evidence": [
+      "Scanned application source files for concurrency & synchronization patterns"
+    ]
+  },
+  "input_name": "CWE - Concurrency & Synchronization"
+}

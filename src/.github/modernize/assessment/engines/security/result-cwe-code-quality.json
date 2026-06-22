@@ -1,0 +1,226 @@
+{
+  "status": "success",
+  "execution_time_seconds": 0,
+  "result": {
+    "evidence": [
+      "Scanned application source files for code quality patterns"
+    ],
+    "confidence": "high",
+    "values": [
+      {
+        "category": "Code Quality",
+        "storyPoint": 3,
+        "description": "The product parses a formatted message or structure, but it does not handle or incorrectly handles a length field that is inconsistent with the actual length of the associated data.",
+        "severity": "potential",
+        "name": "Improper Handling of Length Parameter Inconsistency",
+        "status": "NOT_FOUND",
+        "id": "CWE-130",
+        "evidence": {
+          "explanation": "",
+          "files": []
+        }
+      },
+      {
+        "category": "Code Quality",
+        "storyPoint": 2,
+        "description": "The product does not initialize critical variables, which causes the execution environment to use unexpected values.",
+        "severity": "potential",
+        "name": "Missing Initialization of a Variable",
+        "status": "NOT_FOUND",
+        "id": "CWE-456",
+        "evidence": {
+          "explanation": "",
+          "files": []
+        }
+      },
+      {
+        "category": "Code Quality",
+        "storyPoint": 2,
+        "description": "The code uses a variable that has not been initialized, leading to unpredictable or unintended results.",
+        "severity": "potential",
+        "name": "Use of Uninitialized Variable",
+        "status": "NOT_FOUND",
+        "id": "CWE-457",
+        "evidence": {
+          "explanation": "",
+          "files": []
+        }
+      },
+      {
+        "category": "Code Quality",
+        "storyPoint": 1,
+        "description": "The code uses deprecated or obsolete functions, which suggests that the code has not been actively reviewed or maintained.",
+        "severity": "optional",
+        "name": "Use of Obsolete Function",
+        "status": "NOT_FOUND",
+        "id": "CWE-477",
+        "evidence": {
+          "explanation": "",
+          "files": []
+        }
+      },
+      {
+        "category": "Code Quality",
+        "storyPoint": 1,
+        "description": "The product contains an expression that will always evaluate to false.",
+        "severity": "optional",
+        "name": "Expression is Always False",
+        "status": "NOT_FOUND",
+        "id": "CWE-570",
+        "evidence": {
+          "explanation": "",
+          "files": []
+        }
+      },
+      {
+        "category": "Code Quality",
+        "storyPoint": 1,
+        "description": "The product contains an expression that will always evaluate to true.",
+        "severity": "optional",
+        "name": "Expression is Always True",
+        "status": "NOT_FOUND",
+        "id": "CWE-571",
+        "evidence": {
+          "explanation": "",
+          "files": []
+        }
+      },
+      {
+        "category": "Code Quality",
+        "storyPoint": 3,
+        "description": "The product does not properly check inputs that are used for loop conditions, potentially leading to a denial of service or other consequences because of excessive looping.",
+        "severity": "potential",
+        "name": "Unchecked Input for Loop Condition",
+        "status": "NOT_FOUND",
+        "id": "CWE-606",
+        "evidence": {
+          "explanation": "",
+          "files": []
+        }
+      },
+      {
+        "category": "Code Quality",
+        "storyPoint": 3,
+        "description": "The product does not initialize or incorrectly initializes a resource, which might leave the resource in an unexpected state when it is accessed or used.",
+        "severity": "potential",
+        "name": "Improper Initialization",
+        "status": "NOT_FOUND",
+        "id": "CWE-665",
+        "evidence": {
+          "explanation": "",
+          "files": []
+        }
+      },
+      {
+        "category": "Code Quality",
+        "storyPoint": 3,
+        "description": "When converting from one data type to another, such as long to integer, data can be omitted or translated in a way that produces unexpected values. If the resulting values are used in a sensitive context, then dangerous behaviors may occur.",
+        "severity": "potential",
+        "name": "Incorrect Conversion between Numeric Types",
+        "status": "NOT_FOUND",
+        "id": "CWE-681",
+        "evidence": {
+          "explanation": "",
+          "files": []
+        }
+      },
+      {
+        "category": "Code Quality",
+        "storyPoint": 5,
+        "description": "The product performs a calculation that generates incorrect or unintended results that are later used in security-critical decisions or resource management.",
+        "severity": "potential",
+        "name": "Incorrect Calculation",
+        "status": "NOT_FOUND",
+        "id": "CWE-682",
+        "evidence": {
+          "explanation": "",
+          "files": []
+        }
+      },
+      {
+        "category": "Code Quality",
+        "storyPoint": 3,
+        "description": "The product does not release a resource after its effective lifetime has ended, i.e., after the resource is no longer needed.",
+        "severity": "potential",
+        "name": "Missing Release of Resource after Effective Lifetime",
+        "status": "NOT_FOUND",
+        "id": "CWE-772",
+        "evidence": {
+          "explanation": "",
+          "files": []
+        }
+      },
+      {
+        "category": "Code Quality",
+        "storyPoint": 3,
+        "description": "The product does not release a file descriptor or handle after its effective lifetime has ended, i.e., after the file descriptor/handle is no longer needed.",
+        "severity": "potential",
+        "name": "Missing Release of File Descriptor or Handle after Effective Lifetime",
+        "status": "NOT_FOUND",
+        "id": "CWE-775",
+        "evidence": {
+          "explanation": "",
+          "files": []
+        }
+      },
+      {
+        "category": "Code Quality",
+        "storyPoint": 1,
+        "description": "The product uses an expression in which operator precedence causes incorrect logic to be used.",
+        "severity": "optional",
+        "name": "Operator Precedence Logic Error",
+        "status": "NOT_FOUND",
+        "id": "CWE-783",
+        "evidence": {
+          "explanation": "",
+          "files": []
+        }
+      },
+      {
+        "category": "Code Quality",
+        "storyPoint": 5,
+        "description": "The product allocates memory based on an untrusted, large size value, but it does not ensure that the size is within expected limits, allowing arbitrary amounts of memory to be allocated.",
+        "severity": "potential",
+        "name": "Memory Allocation with Excessive Size Value",
+        "status": "NOT_FOUND",
+        "id": "CWE-789",
+        "evidence": {
+          "explanation": "",
+          "files": []
+        }
+      },
+      {
+        "category": "Code Quality",
+        "storyPoint": 3,
+        "description": "The product contains an iteration or loop with an exit condition that cannot be reached, i.e., an infinite loop.",
+        "severity": "potential",
+        "name": "Loop with Unreachable Exit Condition ('Infinite Loop')",
+        "status": "NOT_FOUND",
+        "id": "CWE-835",
+        "evidence": {
+          "explanation": "",
+          "files": []
+        }
+      },
+      {
+        "category": "Code Quality",
+        "storyPoint": 5,
+        "description": "The product uses a dedicated, central data manager component as required by design, but it contains code that performs data-access operations that do not use this data manager.",
+        "severity": "potential",
+        "name": "Data Access Operations Outside of Expected Data Manager Component",
+        "status": "FOUND",
+        "id": "CWE-1057",
+        "evidence": {
+          "explanation": "In SiteMapMapHandler.cs (lines 16, 30), the Web layer handler directly injects and uses BlogDbContext to perform database queries for posts and pages instead of going through the CQRS command/query pattern (LiteBus mediators) used throughout the rest of the application. This bypasses the established data manager abstraction, creating an inconsistency in data access patterns.",
+          "files": [
+            "Moonglade.Web/Handlers/SiteMapMapHandler.cs"
+          ]
+        }
+      }
+    ],
+    "finding": "Assessed 16 CWE rules in Code Quality: 1 FOUND, 15 NOT_FOUND"
+  },
+  "timestamp": "",
+  "input_name": "CWE - Code Quality",
+  "analysis_method": "LLM"
+}

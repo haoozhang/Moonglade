@@ -1,0 +1,97 @@
+{
+  "CweFindings": [
+    {
+      "Files": [
+        "Moonglade.Web/Handlers/SiteMapMapHandler.cs"
+      ],
+      "Explanation": "In SiteMapMapHandler.cs (lines 16, 30), the Web layer handler directly injects and uses BlogDbContext to perform database queries for posts and pages instead of going through the CQRS command/query pattern (LiteBus mediators) used throughout the rest of the application. This bypasses the established data manager abstraction, creating an inconsistency in data access patterns.",
+      "Description": "The product uses a dedicated, central data manager component as required by design, but it contains code that performs data-access operations that do not use this data manager.",
+      "Id": "CWE-1057",
+      "Name": "Data Access Operations Outside of Expected Data Manager Component",
+      "Category": "Code Quality",
+      "StoryPoint": 5,
+      "Severity": "potential"
+    },
+    {
+      "Files": [
+        "Moonglade.Features/Post/AddRequestCountCommand.cs"
+      ],
+      "Explanation": "In AddRequestCountCommandHandler (lines 57-60), after releasing the SemaphoreSlim lock via postLock.Release(), the code checks postLock.CurrentCount == 1 before removing the entry from the static ConcurrentDictionary _locks. There is a TOCTOU race condition: between Release() and the count check, another thread can call GetOrAdd() to retrieve the same semaphore and call WaitAsync() (reducing CurrentCount to 0). If a third thread then arrives after the first thread removes the entry, it creates a new SemaphoreSlim, allowing two threads to concurrently update the same PostId's request count despite the intended exclusive-access design.",
+      "Description": "The product utilizes a shared resource in a concurrent manner, but it does not correctly synchronize access to the resource.",
+      "Id": "CWE-821",
+      "Name": "Incorrect Synchronization",
+      "Category": "Concurrency & Synchronization",
+      "StoryPoint": 8,
+      "Severity": "potential"
+    },
+    {
+      "Files": [
+        "Moonglade.Web/appsettings.json"
+      ],
+      "Explanation": "In appsettings.json (line 3), the default database connection string contains a hard-coded SQL Server password: '******'. This credential is committed to source control and could be used to authenticate to the SQL Server database if the same credentials are used in a deployed environment.",
+      "Description": "The product contains a hard-coded password, which it uses for its own inbound authentication or for outbound communication to external components.",
+      "Id": "CWE-259",
+      "Name": "Use of Hard-coded Password",
+      "Category": "Credentials & Secrets",
+      "StoryPoint": 5,
+      "Severity": "optional"
+    },
+    {
+      "Files": [
+        "Moonglade.Web/appsettings.json"
+      ],
+      "Explanation": "In appsettings.json (line 17), a cryptographic key is hard-coded for the captcha feature: 'SharedKey': 'ShMV26g193e7Lg0nBxmgFRXBMmHDGWhknWul4yXnVbE='. This base64-encoded key is committed to source control and used for HMAC signing of captcha tokens. Anyone with access to the repository can use this key to forge captcha tokens.",
+      "Description": "The product uses a hard-coded, unchangeable cryptographic key.",
+      "Id": "CWE-321",
+      "Name": "Use of Hard-coded Cryptographic Key",
+      "Category": "Credentials & Secrets",
+      "StoryPoint": 5,
+      "Severity": "potential"
+    },
+    {
+      "Files": [
+        "Moonglade.Web/appsettings.json"
+      ],
+      "Explanation": "In appsettings.json (line 3), the default ConnectionStrings section contains hard-coded SQL Server credentials including username ('User Id=sa') and password ('******') committed to the repository. Additionally, the CaptchaSettings section (line 17) contains a hard-coded cryptographic SharedKey. These hard-coded credentials in the default configuration file pose a security risk if deployed without modification.",
+      "Description": "The product contains hard-coded credentials, such as a password or cryptographic key.",
+      "Id": "CWE-798",
+      "Name": "Use of Hard-coded Credentials",
+      "Category": "Credentials & Secrets",
+      "StoryPoint": 5,
+      "Severity": "optional"
+    },
+    {
+      "Files": [
+        "Moonglade.Web/Controllers/ImageController.cs"
+      ],
+      "Explanation": "In ImageController.cs (line 80), the upload handler accepts '.svg' as a valid file extension alongside image types. SVG files can contain embedded JavaScript (<script> tags, event handlers, external resource references) and are served with 'image/svg+xml' content type (ImageInfo.cs:10-11), which browsers render as HTML. No sanitization or content inspection of SVG file content is performed before storage or retrieval. This allows a malicious authenticated user to upload a crafted SVG that executes scripts in the context of the blog's origin when another user views the image URL.",
+      "Description": "The product allows the upload or transfer of dangerous file types that are automatically processed within its environment.",
+      "Id": "CWE-434",
+      "Name": "Unrestricted Upload of File with Dangerous Type",
+      "Category": "File & Path Security",
+      "StoryPoint": 8,
+      "Severity": "mandatory"
+    }
+  ],
+  "Summary": {
+    "TotalFindings": 6,
+    "BySeverity": {
+      "mandatory": 1,
+      "optional": 2,
+      "potential": 3
+    },
+    "TotalRulesAssessed": 59,
+    "CveCount": 0,
+    "RulesPassed": 53,
+    "CweCount": 6,
+    "ByCategory": {
+      "Credentials & Secrets": 3,
+      "Concurrency & Synchronization": 1,
+      "File & Path Security": 1,
+      "Code Quality": 1
+    }
+  },
+  "GeneratedAt": "2026-06-22T10:38:43.4174835Z",
+  "ProjectPath": ".",
+  "CveFindings": []
+}

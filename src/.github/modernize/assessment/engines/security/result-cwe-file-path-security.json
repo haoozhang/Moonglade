@@ -1,0 +1,83 @@
+{
+  "timestamp": "",
+  "execution_time_seconds": 0,
+  "status": "success",
+  "result": {
+    "confidence": "high",
+    "values": [
+      {
+        "status": "NOT_FOUND",
+        "id": "CWE-22",
+        "description": "The product uses external input to construct a pathname that is intended to identify a file or directory that is located underneath a restricted parent directory, but the product does not properly neutralize special elements within the pathname that can cause the pathname to resolve to a location that is outside of the restricted directory.",
+        "evidence": {
+          "explanation": "",
+          "files": []
+        },
+        "storyPoint": 8,
+        "name": "Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')",
+        "category": "File & Path Security",
+        "severity": "optional"
+      },
+      {
+        "status": "NOT_FOUND",
+        "id": "CWE-23",
+        "description": "The product uses external input to construct a pathname that should be within a restricted directory, but it does not properly neutralize sequences such as .. that can resolve to a location that is outside of that directory.",
+        "evidence": {
+          "explanation": "",
+          "files": []
+        },
+        "storyPoint": 5,
+        "name": "Relative Path Traversal",
+        "category": "File & Path Security",
+        "severity": "optional"
+      },
+      {
+        "status": "NOT_FOUND",
+        "id": "CWE-36",
+        "description": "The product uses external input to construct a pathname that should be within a restricted directory, but it does not properly neutralize absolute path sequences such as /abs/path that can resolve to a location that is outside of that directory.",
+        "evidence": {
+          "explanation": "",
+          "files": []
+        },
+        "storyPoint": 5,
+        "name": "Absolute Path Traversal",
+        "category": "File & Path Security",
+        "severity": "optional"
+      },
+      {
+        "status": "FOUND",
+        "id": "CWE-434",
+        "description": "The product allows the upload or transfer of dangerous file types that are automatically processed within its environment.",
+        "evidence": {
+          "explanation": "In ImageController.cs (line 80), the upload handler accepts '.svg' as a valid file extension alongside image types. SVG files can contain embedded JavaScript (<script> tags, event handlers, external resource references) and are served with 'image/svg+xml' content type (ImageInfo.cs:10-11), which browsers render as HTML. No sanitization or content inspection of SVG file content is performed before storage or retrieval. This allows a malicious authenticated user to upload a crafted SVG that executes scripts in the context of the blog's origin when another user views the image URL.",
+          "files": [
+            "Moonglade.Web/Controllers/ImageController.cs"
+          ]
+        },
+        "storyPoint": 8,
+        "name": "Unrestricted Upload of File with Dangerous Type",
+        "category": "File & Path Security",
+        "severity": "mandatory"
+      },
+      {
+        "status": "NOT_FOUND",
+        "id": "CWE-611",
+        "description": "The product processes an XML document that can contain XML entities with URIs that resolve to documents outside of the intended sphere of control, causing the product to embed incorrect documents into its output.",
+        "evidence": {
+          "explanation": "",
+          "files": []
+        },
+        "storyPoint": 5,
+        "name": "Improper Restriction of XML External Entity Reference",
+        "category": "File & Path Security",
+        "severity": "optional"
+      }
+    ],
+    "evidence": [
+      "Scanned application source files for file & path security patterns"
+    ],
+    "finding": "Assessed 5 CWE rules in File & Path Security: 1 FOUND, 4 NOT_FOUND"
+  },
+  "analysis_method": "LLM",
+  "input_name": "CWE - File & Path Security"
+}

@@ -1,0 +1,132 @@
+{
+  "Summary": {
+    "CweCount": 8,
+    "BySeverity": {
+      "mandatory": 1,
+      "optional": 2,
+      "potential": 6
+    },
+    "TotalFindings": 9,
+    "CveCount": 1,
+    "RulesPassed": 51,
+    "ByCategory": {
+      "Concurrency & Synchronization": 2,
+      "CVE": 1,
+      "Code Quality": 2,
+      "Credentials & Secrets": 4
+    },
+    "TotalRulesAssessed": 59
+  },
+  "CveFindings": {
+    "Severity": "mandatory",
+    "StoryPoint": 1,
+    "Id": "CVE-2025-6965",
+    "Description": "[CVE-2025-6965](https://github.com/advisories/GHSA-2m69-gcr7-jv3q): SQLitePCLRaw.lib.e_sqlite3 has a vulnerable dependency on SQLite\n\nSeverity: HIGH (CVSS 9.8)\n\nThere exists a vulnerability in SQLite versions before 3.50.2 where the number of aggregate terms could exceed the number of columns available. This could lead to a memory corruption issue.\n\nAffected dependencies:\n  - SQLitePCLRaw.lib.e_sqlite3:2.1.11 (transitive, pulled by Microsoft.EntityFrameworkCore.Sqlite at Tests/Moonglade.Features.Tests/Moonglade.Features.Tests.csproj:17)\n\nRecommended fix:\n  - Upgrade SQLitePCLRaw.lib.e_sqlite3 to a version above 2.1.11 once a patched version is available, or upgrade Microsoft.EntityFrameworkCore.Sqlite to a version that depends on a patched SQLitePCLRaw.",
+    "Category": "CVE",
+    "Explanation": "[CVE-2025-6965](https://github.com/advisories/GHSA-2m69-gcr7-jv3q): SQLitePCLRaw.lib.e_sqlite3 has a vulnerable dependency on SQLite\n\nSeverity: HIGH (CVSS 9.8)\n\nThere exists a vulnerability in SQLite versions before 3.50.2 where the number of aggregate terms could exceed the number of columns available. This could lead to a memory corruption issue.\n\nAffected dependencies:\n  - SQLitePCLRaw.lib.e_sqlite3:2.1.11 (transitive, pulled by Microsoft.EntityFrameworkCore.Sqlite at Tests/Moonglade.Features.Tests/Moonglade.Features.Tests.csproj:17)\n\nRecommended fix:\n  - Upgrade SQLitePCLRaw.lib.e_sqlite3 to a version above 2.1.11 once a patched version is available, or upgrade Microsoft.EntityFrameworkCore.Sqlite to a version that depends on a patched SQLitePCLRaw.",
+    "Name": "SQLitePCLRaw.lib.e_sqlite3 has a vulnerable dependency on SQLite",
+    "Files": [
+      "Tests/Moonglade.Features.Tests/Moonglade.Features.Tests.csproj:17"
+    ]
+  },
+  "CweFindings": [
+    {
+      "Severity": "potential",
+      "StoryPoint": 5,
+      "Id": "CWE-682",
+      "Description": "The product performs a calculation that generates incorrect or unintended results that are later used in security-critical decisions or resource management.",
+      "Category": "Code Quality",
+      "Explanation": "In WriteFoafCommandHandler.HandleAsync() at line 60, Math.Abs(friend.Url.GetHashCode()) is used to generate a stable friend ID. However, GetHashCode() can return int.MinValue (-2147483648), and Math.Abs(int.MinValue) overflows in C# (returns int.MinValue unchanged, a negative number), producing an incorrect negative-valued ID string '#friend_-2147483648'. This logic error can cause duplicate or malformed FOAF friend IDs.",
+      "Name": "Incorrect Calculation",
+      "Files": [
+        "Moonglade.Web/Handlers/WriteFoafCommand.cs"
+      ]
+    },
+    {
+      "Severity": "potential",
+      "StoryPoint": 3,
+      "Id": "CWE-772",
+      "Description": "The product does not release a resource after its effective lifetime has ended, i.e., after the resource is no longer needed.",
+      "Category": "Code Quality",
+      "Explanation": "In WriteFoafCommandHandler.HandleAsync() at line 35, a StringWriter is created without a 'using' statement or explicit Dispose() call. The XmlWriter wrapping it is closed via writer.Close() on line 72, but the StringWriter itself (which implements IDisposable) is never explicitly disposed, leaving its resources unreleased until garbage collection.",
+      "Name": "Missing Release of Resource after Effective Lifetime",
+      "Files": [
+        "Moonglade.Web/Handlers/WriteFoafCommand.cs"
+      ]
+    },
+    {
+      "Severity": "potential",
+      "StoryPoint": 5,
+      "Id": "CWE-543",
+      "Description": "The product uses the singleton pattern when creating a resource within a multithreaded environment.",
+      "Category": "Concurrency & Synchronization",
+      "Explanation": "In WriteFoafCommandHandler (lines 25-27), the static field '_xmlNamespaces' is lazily initialized using the '??=' operator without any synchronization: 'private static Dictionary<string,string> _xmlNamespaces; ... _xmlNamespaces ??= new()'. In a multithreaded ASP.NET Core environment, multiple concurrent requests can simultaneously observe '_xmlNamespaces' as null and each create a new Dictionary instance, violating the singleton guarantee and potentially causing race conditions.",
+      "Name": "Use of Singleton Pattern Without Synchronization in a Multithreaded Context",
+      "Files": [
+        "Moonglade.Web/Handlers/WriteFoafCommand.cs"
+      ]
+    },
+    {
+      "Severity": "potential",
+      "StoryPoint": 8,
+      "Id": "CWE-667",
+      "Description": "The product does not properly acquire or release a lock on a resource, leading to unexpected resource state changes and behaviors.",
+      "Category": "Concurrency & Synchronization",
+      "Explanation": "In ScheduledPublishWakeUp (lines 9 and 18), 'lock(this)' is used in both GetWakeToken() and WakeUp() methods. Locking on 'this' (the instance reference) is an improper locking pattern: external code that holds a reference to the same ScheduledPublishWakeUp instance could acquire the same lock, potentially causing deadlocks or unintended blocking. The recommended approach is to use a private dedicated lock object.",
+      "Name": "Improper Locking",
+      "Files": [
+        "Moonglade.BackgroundServices/ScheduledPublishWakeUp.cs"
+      ]
+    },
+    {
+      "Severity": "optional",
+      "StoryPoint": 5,
+      "Id": "CWE-259",
+      "Description": "The product contains a hard-coded password, which it uses for its own inbound authentication or for outbound communication to external components.",
+      "Category": "Credentials & Secrets",
+      "Explanation": "In LocalAccountSettings.DefaultValue (line 14), the default admin account is initialized with a hard-coded password hash 'bXHAa7tEsZmCh1pYcHPotNlP0gaYfzIkxKuHoJnHMt0=' with a source code comment explicitly revealing the plaintext password '// admin123'. This hard-coded default credential is committed to source control, making it discoverable by anyone with access to the repository.",
+      "Name": "Use of Hard-coded Password",
+      "Files": [
+        "Moonglade.Configuration/LocalAccountSettings.cs"
+      ]
+    },
+    {
+      "Severity": "potential",
+      "StoryPoint": 5,
+      "Id": "CWE-321",
+      "Description": "The product uses a hard-coded, unchangeable cryptographic key.",
+      "Category": "Credentials & Secrets",
+      "Explanation": "In appsettings.json at line 17, the CaptchaSettings SharedKey is hard-coded to 'ShMV26g193e7Lg0nBxmgFRXBMmHDGWhknWul4yXnVbE='. This cryptographic key used for CAPTCHA validation is committed to source control, allowing anyone with repository access to potentially bypass CAPTCHA verification.",
+      "Name": "Use of Hard-coded Cryptographic Key",
+      "Files": [
+        "Moonglade.Web/appsettings.json"
+      ]
+    },
+    {
+      "Severity": "potential",
+      "StoryPoint": 3,
+      "Id": "CWE-778",
+      "Description": "When a security-critical event occurs, the product either does not record the event or omits important details about the event when logging it.",
+      "Category": "Credentials & Secrets",
+      "Explanation": "The AuthController SignOut endpoint completes the user session without logging the sign-out event. While sign-in events are logged elsewhere in the authentication flow, the lack of a sign-out audit log means that session termination events are not tracked, making it difficult to detect and investigate suspicious session activity or unauthorized access patterns.",
+      "Name": "Insufficient Logging",
+      "Files": [
+        "Moonglade.Web/Controllers/AuthController.cs"
+      ]
+    },
+    {
+      "Severity": "optional",
+      "StoryPoint": 5,
+      "Id": "CWE-798",
+      "Description": "The product contains hard-coded credentials, such as a password or cryptographic key.",
+      "Category": "Credentials & Secrets",
+      "Explanation": "In appsettings.json at line 3, the database connection string contains hard-coded SQL Server credentials: 'User Id=sa;******'. The SA (system administrator) account credentials are committed directly in source control, exposing full database access to anyone with repository access.",
+      "Name": "Use of Hard-coded Credentials",
+      "Files": [
+        "Moonglade.Web/appsettings.json"
+      ]
+    }
+  ],
+  "ProjectPath": ".",
+  "GeneratedAt": "2026-06-22T07:38:11.0000000Z"
+}
